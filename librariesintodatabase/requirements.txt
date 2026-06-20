@@ -1,0 +1,17 @@
+# Core
+pyyaml>=6.0
+requests>=2.31
+python-dotenv>=1.0
+
+# Docs scraping (static)
+trafilatura>=1.8
+
+# Tag extraction + embeddings (local, API-free)
+keybert>=0.8
+sentence-transformers>=2.7
+yake>=0.4.8          # zero-model fallback
+nltk>=3.8            # lemmatization / stemming
+numpy>=1.24
+
+# DB (optional direct path; RPC path needs only requests)
+psycopg2-binary>=2.9

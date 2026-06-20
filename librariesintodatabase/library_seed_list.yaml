@@ -1,0 +1,42 @@
+# Lockstep seed library list
+# ~130 popular + ~80 niche across ecosystems. The scraper resolves docs URLs from
+# each package registry (PyPI project_urls, npm homepage/repository) and prefers
+# llms.txt where present, so only library_id + ecosystem + tier are needed here.
+# Function-level coverage is fullest for pypi (introspection); others are best-effort.
+
+pypi:
+  popular: [numpy, pandas, scipy, scikit-learn, matplotlib, seaborn, plotly, requests,
+    httpx, aiohttp, flask, django, fastapi, starlette, pydantic, sqlalchemy, alembic,
+    celery, redis, pymongo, psycopg2-binary, asyncpg, beautifulsoup4, lxml, scrapy,
+    selenium, playwright, pytest, black, ruff, mypy, pillow, opencv-python, torch,
+    tensorflow, transformers, datasets, langchain, llama-index, openai, anthropic,
+    sentence-transformers, spacy, nltk, xgboost, lightgbm, statsmodels, sympy,
+    networkx, dask, polars, pyarrow, duckdb, boto3, click, typer, rich, tqdm, pyyaml,
+    jinja2, uvicorn, websockets, grpcio, cryptography, pyjwt, gradio, streamlit,
+    bokeh, altair, joblib]
+  niche: [pdfplumber, pikepdf, weasyprint, orjson, msgpack, numba, jax, einops,
+    albumentations, timm, accelerate, peft, vllm, outlines, instructor, dspy,
+    litellm, tenacity, cachetools, diskcache, dill, humanize, tabulate, questionary,
+    textual, watchdog, apscheduler, rq, dramatiq, structlog, opentelemetry-api,
+    prometheus-client, tortoise-orm, peewee, beanie, more-itertools, toolz, funcy,
+    glom, jmespath, jsonpath-ng, deepdiff, srsly, hypothesis, faker]
+
+npm:
+  popular: [react, vue, svelte, next, express, fastify, "@nestjs/core", axios, lodash,
+    date-fns, dayjs, zod, prisma, drizzle-orm, mongoose, zustand,
+    "@tanstack/react-query", vite, webpack, esbuild, vitest, jest, playwright, eslint,
+    prettier, tailwindcss, "@mui/material", d3, three, recharts, framer-motion,
+    socket.io, graphql, "@apollo/client", "@trpc/server", commander, chalk, pino,
+    dotenv, jsonwebtoken]
+  niche: [effect, valibot, arktype, ky, undici, xstate, immer, clsx, tailwind-merge,
+    cmdk, sonner, hono, elysia, lucia-auth, kysely, bullmq, croner, partykit,
+    nanostores, superjson, tiny-invariant, vaul, oslo, slonik, pg-boss]
+
+cargo:
+  popular: [tokio, serde, reqwest, axum, clap, anyhow, thiserror, rayon, sqlx, tracing,
+    hyper, bevy]
+  niche: [miette, eyre, dashmap, parking_lot, crossbeam, flume, bytes, itertools]
+
+go:
+  popular: [gin, echo, fiber, gorm, cobra, viper, zap, testify]
+  niche: [samber/lo, sourcegraph/conc, uber-go/fx, rs/zerolog, spf13/afero]
