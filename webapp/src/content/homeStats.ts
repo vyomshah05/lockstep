@@ -9,7 +9,7 @@
 // semantic cache, so the search is mostly skipped.
 export const planningTimeShare = [
   { label: 'Without Lockstep', pct: 60 },
-  { label: 'With Lockstep', pct: 15 },
+  { label: 'With Lockstep', pct: 42 },
 ];
 
 export const planningTimeReductionPct = Math.round(
@@ -56,11 +56,10 @@ export const syntaxErrorRate: ErrorPoint[] = [
   { prompt: 8, withMcp: 3, withoutMcp: 18 },
 ];
 
-export const avgSyntaxErrorRate = {
-  withMcp: Math.round(
-    syntaxErrorRate.reduce((s, p) => s + p.withMcp, 0) / syntaxErrorRate.length,
-  ),
-  withoutMcp: Math.round(
-    syntaxErrorRate.reduce((s, p) => s + p.withoutMcp, 0) / syntaxErrorRate.length,
-  ),
+// The stat cards say "after prompt 1" — pull the rate right after prompt 1
+// (the chart's first point) rather than a session-wide average, so the
+// headline number always matches what the chart actually shows there.
+export const firstPromptErrorRate = {
+  withMcp: syntaxErrorRate[0].withMcp,
+  withoutMcp: syntaxErrorRate[0].withoutMcp,
 };

@@ -14,7 +14,7 @@ import {
 import { Card } from '../components/ui/Card';
 import { useDarkMode } from '../hooks/useDarkMode';
 import {
-  avgSyntaxErrorRate,
+  firstPromptErrorRate,
   planningTimeReductionPct,
   planningTimeShare,
   syntaxErrorRate,
@@ -111,8 +111,8 @@ export function Home() {
 
       <div className="grid gap-4 sm:grid-cols-3">
         <StatCard value={`~${planningTimeReductionPct}%`} label="less time spent planning which library and API to use, with Lockstep" accent="teal" />
-        <StatCard value={`${avgSyntaxErrorRate.withMcp}%`} label="syntax-error rate after prompt 1, with Lockstep" accent="teal" />
-        <StatCard value={`${avgSyntaxErrorRate.withoutMcp}%`} label="syntax-error rate after prompt 1, without Lockstep" accent="claude" />
+        <StatCard value={`${firstPromptErrorRate.withMcp}%`} label="syntax-error rate after prompt 1, with Lockstep" accent="teal" />
+        <StatCard value={`${firstPromptErrorRate.withoutMcp}%`} label="syntax-error rate after prompt 1, without Lockstep" accent="claude" />
       </div>
 
       <Card className="p-6">
