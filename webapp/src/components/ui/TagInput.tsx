@@ -27,17 +27,17 @@ export function TagInput({ tags, onChange, placeholder }: TagInputProps) {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2 rounded-lg border border-black/10 dark:border-white/15 bg-white dark:bg-black/20 px-3 py-2 focus-within:ring-2 focus-within:ring-accent/40 dark:focus-within:ring-accent-dark/40">
+    <div className="flex flex-wrap items-center gap-2 rounded-lg border border-black/10 dark:border-white/15 bg-white dark:bg-black/20 px-3 py-2 focus-within:ring-2 focus-within:ring-teal/40 dark:focus-within:ring-teal-dark/40">
       {tags.map((tag) => (
         <span
           key={tag}
-          className="flex items-center gap-1 rounded-full bg-accent/10 dark:bg-accent-dark/20 px-2.5 py-1 text-xs font-medium text-accent dark:text-accent-dark"
+          className="flex items-center gap-1 rounded-full bg-teal/10 dark:bg-teal-dark/20 px-2.5 py-1 text-xs font-medium text-teal dark:text-teal-dark"
         >
           {tag}
           <button
             type="button"
             onClick={() => onChange(tags.filter((t) => t !== tag))}
-            className="text-accent/60 hover:text-accent dark:text-accent-dark/60 dark:hover:text-accent-dark"
+            className="text-teal/60 hover:text-teal dark:text-teal-dark/60 dark:hover:text-teal-dark"
           >
             ×
           </button>
