@@ -19,6 +19,10 @@ export default {
           DEFAULT: '#14B8A6',
           dark: '#2DD4BF',
         },
+        claude: {
+          DEFAULT: '#C15F3C',
+          dark: '#C15F3C',
+        },
       },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],

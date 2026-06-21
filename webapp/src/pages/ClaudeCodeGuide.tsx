@@ -80,7 +80,7 @@ export function ClaudeCodeGuide() {
         <div className="grid gap-3 sm:grid-cols-2">
           {TOOLS.map((t) => (
             <Card key={t.name} className="p-4">
-              <div className="mb-1 font-mono text-sm font-semibold text-accent dark:text-accent-dark">
+              <div className="mb-1 font-mono text-sm font-semibold text-claude dark:text-claude-dark">
                 {t.name}
               </div>
               <p className="text-sm text-slate-600 dark:text-slate-400">{t.desc}</p>
