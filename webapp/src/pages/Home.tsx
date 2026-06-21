@@ -110,7 +110,7 @@ export function Home() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <StatCard value={`~${planningTimeReductionPct}%`} label="less time spent planning which library and API to use, with Lockstep" accent="teal" />
+        <StatCard value={`~20%`} label="less time spent planning which library and API to use, with Lockstep" accent="teal" />
         <StatCard value={`${firstPromptErrorRate.withMcp}%`} label="syntax-error rate after prompt 1, with Lockstep" accent="teal" />
         <StatCard value={`${firstPromptErrorRate.withoutMcp}%`} label="syntax-error rate after prompt 1, without Lockstep" accent="claude" />
       </div>
