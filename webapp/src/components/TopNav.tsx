@@ -1,6 +1,7 @@
-export type SectionKey = 'claude-code' | 'devin' | 'add-docs';
+export type SectionKey = 'home' | 'claude-code' | 'devin' | 'add-docs';
 
 const SECTIONS: { key: SectionKey; label: string; activeClass: string }[] = [
+  { key: 'home', label: 'Home', activeClass: 'text-slate-900 dark:text-white bg-white dark:bg-white/15 shadow-sm' },
   { key: 'claude-code', label: 'Claude Code', activeClass: 'text-claude dark:text-claude-dark bg-claude/10 dark:bg-claude-dark/15' },
   { key: 'devin', label: 'Devin', activeClass: 'text-accent dark:text-accent-dark bg-accent/10 dark:bg-accent-dark/15' },
   { key: 'add-docs', label: 'Add Documentation', activeClass: 'text-teal dark:text-teal-dark bg-teal/10 dark:bg-teal-dark/15' },
