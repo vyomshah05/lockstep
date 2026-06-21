@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "lockstep": {
+      "command": "/opt/anaconda3/envs/cs178/bin/python",
+      "args": ["-m", "server"],
+      "env": {
+        "REDIS_HOST": "${env:REDIS_HOST}",
+        "REDIS_PORT": "${env:REDIS_PORT}",
+        "REDIS_PASSWORD": "${env:REDIS_PASSWORD}",
+        "SUPABASE_URL": "${env:SUPABASE_URL}",
+        "SUPABASE_KEY": "${env:SUPABASE_KEY}",
+        "ANTHROPIC_API_KEY": "${env:ANTHROPIC_API_KEY}"
+      }
+    }
+  }
+}
