@@ -1,96 +1,118 @@
 # Lockstep MCP Server - Devin CLI Setup
 
-This guide explains how to configure the Lockstep MCP server for use with Devin CLI.
+This guide provides the technical configuration details for the Lockstep MCP server with Devin CLI.
 
-## Quick Setup
+## Configuration Overview
 
-1. **Copy the example configuration:**
-   ```bash
-   cp .devin/config.json .devin/config.local.json
-   ```
+The MCP server configuration is defined in `.devin/config.json` and uses environment variables from your `.env` file.
 
-2. **Set your environment variables in `.devin/config.local.json`:**
-   Replace `${env:VAR_NAME}` with your actual values or keep them as environment variable references if you have them set in your shell.
+## Configuration File Structure
 
-3. **Verify your Python path:**
-   The example configuration uses `/opt/anaconda3/envs/cs178/bin/python`. Update this if your conda environment is at a different path:
-   ```bash
-   which python
-   # Update the "command" field in .devin/config.local.json with the output
-   ```
+The `.devin/config.json` file contains:
 
-4. **Test the connection:**
-   ```bash
-   devin mcp list
-   # You should see "lockstep" in the list of available MCP servers
-   ```
-
-## Manual Configuration
-
-If you prefer to configure via command line instead of config files:
-
-```bash
-devin mcp add lockstep -- /opt/anaconda3/envs/cs178/bin/python -m server
+```json
+{
+  "mcpServers": {
+    "lockstep": {
+      "command": "/opt/anaconda3/envs/cs178/bin/python",
+      "args": ["-m", "server"],
+      "cwd": "/Users/doubledogok/calaihack2026/cal-aihacks-2026/cal-ai-2026",
+      "env": {
+        "REDIS_HOST": "${env:REDIS_HOST}",
+        "REDIS_PORT": "${env:REDIS_PORT}",
+        "REDIS_USERNAME": "${env:REDIS_USERNAME}",
+        "REDIS_PASSWORD": "${env:REDIS_PASSWORD}",
+        "SUPABASE_URL": "${env:SUPABASE_URL}",
+        "SUPABASE_SERVICE_KEY": "${env:SUPABASE_SERVICE_KEY}",
+        "ANTHROPIC_API_KEY": "${env:ANTHROPIC_API_KEY}",
+        "RERANK_MODEL": "${env:RERANK_MODEL}",
+        "EMBED_MODEL": "${env:EMBED_MODEL}",
+        "EMBED_DIM": "${env:EMBED_DIM}",
+        "CACHE_CAPACITY": "${env:CACHE_CAPACITY}",
+        "CACHE_THETA": "${env:CACHE_THETA}",
+        "DOCS_TTL_SECONDS": "${env:DOCS_TTL_SECONDS}",
+        "RECO_TTL_SECONDS": "${env:RECO_TTL_SECONDS}",
+        "DOCS_TOP_K": "${env:DOCS_TOP_K}",
+        "LIBS_TOP_K": "${env:LIBS_TOP_K}",
+        "LOCKSTEP_HOST": "${env:LOCKSTEP_HOST}",
+        "LOCKSTEP_PORT": "${env:LOCKSTEP_PORT}"
+      }
+    }
+  }
+}
 ```
 
-Then set your environment variables:
+## Key Configuration Details
 
+### Working Directory (`cwd`)
+The `cwd` field ensures the server starts in the correct directory to access:
+- The `.env` file
+- Python modules (`config.py`, `server.py`, etc.)
+- The `tools/` directory
+
+### Environment Variable Loading
+All environment variables are loaded from your `.env` file using the `${env:VAR_NAME}` syntax. This means:
+- No sensitive credentials are stored in config files
+- Configuration can be shared via version control
+- Each developer can use their own `.env` file
+
+### Python Command
+The command uses the full path to your conda environment Python interpreter:
+- `/opt/anaconda3/envs/cs178/bin/python`
+- Update this if your conda environment is at a different location
+
+## Setup Steps
+
+### 1. Create local configuration
 ```bash
-export REDIS_HOST="your-redis-host"
-export REDIS_PORT="your-redis-port"
-export REDIS_PASSWORD="your-redis-password"
-export SUPABASE_URL="your-supabase-url"
-export SUPABASE_KEY="your-supabase-key"
-export ANTHROPIC_API_KEY="your-anthropic-api-key"
+cp .devin/config.json .devin/config.local.json
 ```
 
-## Available Tools
-
-Once configured, these MCP tools will be available to Devin:
-
-- `mcp__lockstep__plan_task` - Decompose a coding prompt and return a library + docs plan
-- `mcp__lockstep__resolve_version` - Parse lockfiles and return pinned dependency versions
-- `mcp__lockstep__recommend_library` - Recommend libraries for a coding task
-- `mcp__lockstep__get_versioned_docs` - Return documentation chunks for a library at a specific version
-
-## Environment Variables
-
-Required environment variables:
-
-- `REDIS_HOST` - Redis Cloud host
-- `REDIS_PORT` - Redis Cloud port
-- `REDIS_PASSWORD` - Redis Cloud password
-- `SUPABASE_URL` - Supabase project URL
-- `SUPABASE_KEY` - Supabase anon/service key
-- `ANTHROPIC_API_KEY` - Anthropic API key for Claude-based task decomposition
-
-## Troubleshooting
-
-**Server doesn't start:**
-- Verify your Python path is correct: `which python`
-- Check that all required dependencies are installed: `pip list`
-- Test the server manually: `/opt/anaconda3/envs/cs178/bin/python -m server`
-
-**Connection errors:**
-- Verify Redis and Supabase credentials are correct
-- Check network connectivity to Redis Cloud and Supabase
-- Test Redis connection: `redis-cli -h HOST -p PORT -a PASSWORD ping`
-
-**Tools not appearing:**
-- Run `devin mcp list` to verify the server is configured
-- Check Devin logs for MCP server startup errors
-- Ensure `.devin/config.local.json` is in your project root
-
-## Development
-
-For development, you can run the server in hardcoded mode to test the MCP transport without hitting real backends:
-
+### 2. Load environment variables
 ```bash
-export LOCKSTEP_HARDCODED=1
-devin mcp add lockstep-dev -- /opt/anaconda3/envs/cs178/bin/python -m server
+export $(grep -v '^#' .env | xargs)
 ```
+
+### 3. Verify configuration
+```bash
+devin mcp list
+devin mcp get lockstep
+```
+
+## Available MCP Tools
+
+Once configured, these tools are available to Devin:
+
+- `mcp__lockstep__plan_task` - Decompose coding prompts into subtasks with library recommendations
+- `mcp__lockstep__resolve_version` - Parse lockfiles and extract pinned versions
+- `mcp__lockstep__recommend_library` - Recommend libraries for specific tasks
+- `mcp__lockstep__get_versioned_docs` - Fetch version-specific documentation
+
+## Environment Variables Reference
+
+All variables are defined in your `.env` file:
+
+**Required:**
+- `REDIS_HOST`, `REDIS_PORT`, `REDIS_USERNAME`, `REDIS_PASSWORD` - Redis connection
+- `SUPABASE_URL`, `SUPABASE_SERVICE_KEY` - Supabase connection
+- `ANTHROPIC_API_KEY` - Claude API for task decomposition
+
+**Optional (with defaults):**
+- `RERANK_MODEL` - Default: `claude-sonnet-4-6`
+- `EMBED_MODEL` - Default: `all-MiniLM-L6-v2`
+- `EMBED_DIM` - Default: `384`
+- `CACHE_CAPACITY` - Default: `1000`
+- `CACHE_THETA` - Default: `0.92`
+- `DOCS_TTL_SECONDS` - Default: `2592000` (30 days)
+- `RECO_TTL_SECONDS` - Default: `900` (15 minutes)
+- `DOCS_TOP_K` - Default: `8`
+- `LIBS_TOP_K` - Default: `8`
+- `LOCKSTEP_HOST` - Default: `127.0.0.1`
+- `LOCKSTEP_PORT` - Default: `8000`
 
 ## References
 
-- [Devin CLI MCP Documentation](https://devin.ai/docs/extensibility/mcp)
-- [Lockstep Project README](./README.md)
+- **Step-by-step usage guide**: See [DEVIN_USAGE_GUIDE.md](./DEVIN_USAGE_GUIDE.md)
+- **Project overview**: See [README.md](./README.md)
+- **Data schema**: See [CONTRACT.md](./CONTRACT.md)
+- **Devin CLI MCP docs**: https://devin.ai/docs/extensibility/mcp
