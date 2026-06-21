@@ -14,9 +14,9 @@ The `.devin/config.json` file contains:
 {
   "mcpServers": {
     "lockstep": {
-      "command": "/opt/anaconda3/envs/cs178/bin/python",
+      "command": "${env:LOCKSTEP_PYTHON}",
       "args": ["-m", "server"],
-      "cwd": "/Users/doubledogok/calaihack2026/cal-aihacks-2026/cal-ai-2026",
+      "cwd": "..",
       "env": {
         "REDIS_HOST": "${env:REDIS_HOST}",
         "REDIS_PORT": "${env:REDIS_PORT}",
@@ -35,7 +35,8 @@ The `.devin/config.json` file contains:
         "DOCS_TOP_K": "${env:DOCS_TOP_K}",
         "LIBS_TOP_K": "${env:LIBS_TOP_K}",
         "LOCKSTEP_HOST": "${env:LOCKSTEP_HOST}",
-        "LOCKSTEP_PORT": "${env:LOCKSTEP_PORT}"
+        "LOCKSTEP_PORT": "${env:LOCKSTEP_PORT}",
+        "LOCKSTEP_PYTHON": "${env:LOCKSTEP_PYTHON}"
       }
     }
   }
@@ -45,10 +46,24 @@ The `.devin/config.json` file contains:
 ## Key Configuration Details
 
 ### Working Directory (`cwd`)
-The `cwd` field ensures the server starts in the correct directory to access:
-- The `.env` file
-- Python modules (`config.py`, `server.py`, etc.)
-- The `tools/` directory
+The `cwd` field is set to `".."` (relative path) which means:
+- The server runs from the parent directory of `.devin/config.json` (the project root)
+- This ensures the `.env` file and Python modules are accessible
+- Makes the configuration portable across different systems and directory structures
+
+### Python Path
+The `command` field uses `${env:LOCKSTEP_PYTHON}` environment variable for flexibility. Set this in your `.env` file:
+
+```bash
+# In your .env file
+LOCKSTEP_PYTHON=python3  # or full path like: /opt/anaconda3/envs/cs178/bin/python
+```
+
+Common values:
+- `python3` - Uses system Python 3 from PATH
+- `/opt/anaconda3/envs/YOUR_ENV/bin/python` - Specific conda environment
+- `/usr/local/bin/python3` - Homebrew Python
+- `/usr/bin/python3` - System Python
 
 ### Environment Variable Loading
 All environment variables are loaded from your `.env` file using the `${env:VAR_NAME}` syntax. This means:
@@ -93,6 +108,7 @@ Once configured, these tools are available to Devin:
 All variables are defined in your `.env` file:
 
 **Required:**
+- `LOCKSTEP_PYTHON` - Python interpreter path (e.g., `python3` or full path)
 - `REDIS_HOST`, `REDIS_PORT`, `REDIS_USERNAME`, `REDIS_PASSWORD` - Redis connection
 - `SUPABASE_URL`, `SUPABASE_SERVICE_KEY` - Supabase connection
 - `ANTHROPIC_API_KEY` - Claude API for task decomposition
@@ -113,6 +129,6 @@ All variables are defined in your `.env` file:
 ## References
 
 - **Step-by-step usage guide**: See [DEVIN_USAGE_GUIDE.md](./DEVIN_USAGE_GUIDE.md)
-- **Project overview**: See [README.md](./README.md)
-- **Data schema**: See [CONTRACT.md](./CONTRACT.md)
+- **Project overview**: See [README.md](../README.md)
+- **Data schema**: See [CONTRACT.md](../CONTRACT.md)
 - **Devin CLI MCP docs**: https://devin.ai/docs/extensibility/mcp

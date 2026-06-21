@@ -18,10 +18,22 @@ which python
 # Should output: /opt/anaconda3/envs/cs178/bin/python
 ```
 
-### 1.2 Verify your .env file exists
+### 1.2 Set the Python path
+The configuration uses the `LOCKSTEP_PYTHON` environment variable. Add this to your `.env` file:
+
 ```bash
-ls -la .env
-# Should show your .env file in the project root
+# In your .env file
+LOCKSTEP_PYTHON=python3  # or use full path for specific environment
+```
+
+For a specific conda environment:
+```bash
+# Find your Python path
+which python
+# Output example: /opt/anaconda3/envs/cs178/bin/python
+
+# Add to your .env file
+LOCKSTEP_PYTHON=/opt/anaconda3/envs/cs178/bin/python
 ```
 
 ### 1.3 Test the server manually
@@ -72,13 +84,18 @@ cp .devin/config.json .devin/config.local.json
 
 ### 3.2 Verify the configuration
 Check that `.devin/config.local.json` contains:
+- `"cwd": ".."` - relative path to parent directory (project root)
+- `"command": "${env:LOCKSTEP_PYTHON}"` - flexible Python path
+- All environment variable references using `${env:VAR_NAME}` syntax
+
+Example configuration:
 ```json
 {
   "mcpServers": {
     "lockstep": {
-      "command": "/opt/anaconda3/envs/cs178/bin/python",
+      "command": "${env:LOCKSTEP_PYTHON}",
       "args": ["-m", "server"],
-      "cwd": "/Users/doubledogok/calaihack2026/cal-aihacks-2026/cal-ai-2026",
+      "cwd": "..",
       "env": {
         "REDIS_HOST": "${env:REDIS_HOST}",
         "REDIS_PORT": "${env:REDIS_PORT}",
@@ -97,7 +114,8 @@ Check that `.devin/config.local.json` contains:
         "DOCS_TOP_K": "${env:DOCS_TOP_K}",
         "LIBS_TOP_K": "${env:LIBS_TOP_K}",
         "LOCKSTEP_HOST": "${env:LOCKSTEP_HOST}",
-        "LOCKSTEP_PORT": "${env:LOCKSTEP_PORT}"
+        "LOCKSTEP_PORT": "${env:LOCKSTEP_PORT}",
+        "LOCKSTEP_PYTHON": "${env:LOCKSTEP_PYTHON}"
       }
     }
   }
@@ -183,7 +201,7 @@ I'm using SQLAlchemy 2.0. Can you use mcp__lockstep__get_versioned_docs to get t
 ### 7.1 Run the cache inspector
 In a separate terminal:
 ```bash
-cd /Users/doubledogok/calaihack2026/cal-aihacks-2026/cal-ai-2026
+# From project root
 python scripts/cache_inspector.py
 ```
 
@@ -210,10 +228,10 @@ python scripts/cache_inspector.py --watch 5
 **Problem**: Devin can't connect to the MCP server
 
 **Solutions**:
-1. Verify Python path: `which python`
-2. Test manually: `python -m server`
-3. Check `.devin/config.local.json` has correct `cwd` path
-4. Ensure conda environment is activated
+1. Verify `LOCKSTEP_PYTHON` is set in your `.env` file: `grep LOCKSTEP_PYTHON .env`
+2. Test the Python path manually: `$LOCKSTEP_PYTHON -m server`
+3. Check `.devin/config.local.json` has correct `cwd: ".."`
+4. Ensure your Python path is valid: `which python3` or test your specific path
 
 ### Environment variables not loading
 **Problem**: MCP server can't access credentials
@@ -279,7 +297,7 @@ The cache inspector can help you understand usage patterns across different Devi
 
 ## Getting Help
 
-- Check the main [README.md](./README.md) for project details
-- Review [CONTRACT.md](./CONTRACT.md) for data schema information
+- Check the main [README.md](../README.md) for project details
+- Review [CONTRACT.md](../CONTRACT.md) for data schema information
 - See [DEVIN_SETUP.md](./DEVIN_SETUP.md) for configuration reference
 - Run tests: `pytest tests/` to verify server functionality

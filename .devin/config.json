@@ -1,9 +1,9 @@
 {
   "mcpServers": {
     "lockstep": {
-      "command": "/opt/anaconda3/envs/cs178/bin/python",
+      "command": "${env:LOCKSTEP_PYTHON}",
       "args": ["-m", "server"],
-      "cwd": "/Users/doubledogok/calaihack2026/cal-aihacks-2026/cal-ai-2026",
+      "cwd": "..",
       "env": {
         "REDIS_HOST": "${env:REDIS_HOST}",
         "REDIS_PORT": "${env:REDIS_PORT}",
@@ -22,7 +22,8 @@
         "DOCS_TOP_K": "${env:DOCS_TOP_K}",
         "LIBS_TOP_K": "${env:LIBS_TOP_K}",
         "LOCKSTEP_HOST": "${env:LOCKSTEP_HOST}",
-        "LOCKSTEP_PORT": "${env:LOCKSTEP_PORT}"
+        "LOCKSTEP_PORT": "${env:LOCKSTEP_PORT}",
+        "LOCKSTEP_PYTHON": "${env:LOCKSTEP_PYTHON}"
       }
     }
   }
